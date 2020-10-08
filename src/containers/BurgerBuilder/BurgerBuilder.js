@@ -1,15 +1,24 @@
 import React, {Component} from 'react';
 import Aux from '../../hoc/Auxilary';
 import Burger from '../../components/Burger/Burger';
-class BurgerBUilder extends Component {
+import BuildControls from '../../components/Burger/BuildControls/BuildControls'
+class BurgerBuilder extends Component {
+    state = {
+        ingredients:{
+            meat:0,
+            bacon:0,
+            salad:0,
+            cheese:0
+        }
+    }
     render() {
         return (
             <Aux>
-                <Burger/>
-                <div>Burger control</div>
+                <Burger ingredients = {this.state.ingredients}/>
+                <BuildControls/>
             </Aux>
         );
     }
 }
 
-export default BurgerBUilder;
+export default BurgerBuilder;
