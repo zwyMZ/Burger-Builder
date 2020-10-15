@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Aux from "../../hoc/Auxilary";
+import Aux from "../../hoc/Auxilary/Auxilary";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
@@ -66,7 +66,6 @@ class BurgerBuilder extends Component {
     this.updatePurchaseState(updatedIngredients);
   };
   render() {
-    console.log(this.state.purchasable);
     const disableInfo = { ...this.state.ingredients };
 
     for (let key in disableInfo) {
@@ -81,6 +80,7 @@ class BurgerBuilder extends Component {
         >
           <OrderSummary
             ingredients={this.state.ingredients}
+            totalPrice = {this.state.totalPrice.toFixed(2)}
             purchaseCanceled={this.purchaseCancelHandler}
             purchaseContinued={this.purchaseContinueHandler}
           />
