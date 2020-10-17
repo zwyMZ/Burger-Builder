@@ -4,7 +4,7 @@ import Backdrop from "../Backdrop/Backdrop";
 import Aux from "../../../hoc/Auxilary/Auxilary";
 class Modal extends Component {
   shouldComponentUpdate(nextProps, nextState){
-    if(nextProps.show!==this.props.show){
+    if(nextProps.show!==this.props.show || this.props.children!==nextProps.children){
       return true;
     }
   }
