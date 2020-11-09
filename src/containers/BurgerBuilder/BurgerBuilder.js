@@ -8,7 +8,7 @@ import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as burgerBuilderActions from "../../store/actions/index";
-import axios from '../../axios-orders';
+import axios from "../../axios-orders";
 
 class BurgerBuilder extends Component {
   state = {
@@ -29,7 +29,12 @@ class BurgerBuilder extends Component {
     return sum > 0;
   };
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuth) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.onSetRedirectPath('/checkout');
+      this.props.history.push("/auth");
+    }
   };
   purchaseCancelHandler = () => {
     this.setState({ purchasing: false });
@@ -62,6 +67,7 @@ class BurgerBuilder extends Component {
             disabled={disableInfo}
             purchasable={this.updatePurchaseState(this.props.ings)}
             price={this.props.totalPrice}
+            isAuth={this.props.isAuth}
             purchasing={this.purchaseHandler}
           />
         </Aux>
@@ -94,7 +100,8 @@ const mapStateToProps = (state) => {
   return {
     ings: state.burgerBuilder.ingredients,
     totalPrice: state.burgerBuilder.totalPrice,
-    error: state.burgerBuilder.error
+    error: state.burgerBuilder.error,
+    isAuth: state.auth.token !== null,
   };
 };
 
@@ -104,11 +111,13 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(burgerBuilderActions.addIngredient(ingName)),
     onIngredientRemoved: (ingName) =>
       dispatch(burgerBuilderActions.removeIngredient(ingName)),
-    onInitIngredients:()=>dispatch(burgerBuilderActions.initIngredients())
+    onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
+    onSetRedirectPath: (path) =>
+      dispatch(burgerBuilderActions.setAuthRedirectPath(path)),
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withErrorHandler(BurgerBuilder,axios));
+)(withErrorHandler(BurgerBuilder, axios));
